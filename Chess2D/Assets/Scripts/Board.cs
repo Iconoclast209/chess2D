@@ -7,6 +7,7 @@ public class Board : MonoBehaviour
 {
     #region FIELDS
     public GameObject mCellPrefab;
+    [HideInInspector]
     public Cell[,] mAllCells = new Cell[8, 8];
     #endregion
 
@@ -15,7 +16,7 @@ public class Board : MonoBehaviour
     {
         for (int y = 0; y < 8; y++)
         {
-            for(int x = 0;x < 8;x++)
+            for(int x = 0; x < 8; x++)
             {
                 //Create the Cell
                 GameObject newCell = Instantiate(mCellPrefab, transform);
