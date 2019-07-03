@@ -1,18 +1,85 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PieceManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region FIELDS
+    public GameObject mPiecePrefab;
+    private List<BasePiece> mWhitePieces = null;
+    private List<BasePiece> mBlackPieces = null;
+
+    private string[] mPieceOrder = new string[16]
     {
-        
+        "P", "P", "P", "P", "P", "P", "P", "P",
+        "R", "KN", "B", "K", "Q", "B", "KN", "R"
+    };
+
+    private Dictionary<string, Type> mPieceLibrary = new Dictionary<string, Type>();
+    #endregion
+
+    #region METHODS
+    private void Awake()
+    {
+        mPieceLibrary.Add("P", typeof(Pawn));
+        mPieceLibrary.Add("R", typeof(Rook));
+        mPieceLibrary.Add("KN", typeof(Knight));
+        mPieceLibrary.Add("B", typeof(Bishop));
+        mPieceLibrary.Add("K", typeof(King));
+        mPieceLibrary.Add("Q", typeof(Queen));
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Setup(Board board)
     {
-        
+        mWhitePieces = CreatePieces(Color.white, new Color32(80, 124, 159, 255), board);
+        mBlackPieces = CreatePieces(Color.black, new Color32(210, 95, 64, 255), board);
+
+        PlacePieces(1, 0, mWhitePieces, board);
+        PlacePieces(6, 7, mBlackPieces, board);
     }
+
+    private List<BasePiece> CreatePieces(Color teamColor, Color32 spriteColor, Board board)
+    {
+        List<BasePiece> newPieces = new List<BasePiece>();
+
+        for(int i =0; i < mPieceOrder.Length; i++)
+        {
+            //Create new piece
+            GameObject newPieceObject = Instantiate(mPiecePrefab);
+
+            //Set the parent of the new piece to the Piece Manager
+            newPieceObject.transform.SetParent(this.transform);
+
+            // Set Scale and Rotation
+            newPieceObject.transform.localScale = new Vector3(.75f, .75f, .75f);
+            newPieceObject.transform.localRotation = Quaternion.identity;
+
+            //Get the Type, apply to new object
+            string key = mPieceOrder[i];
+            Type pieceType = mPieceLibrary[key];
+
+            //Store New Piece
+            BasePiece newPiece = (BasePiece)newPieceObject.AddComponent(pieceType);
+            newPieces.Add(newPiece);
+
+            //Setup Piece
+            newPiece.Setup(teamColor, spriteColor, this);
+        }
+        return newPieces;
+    }
+
+    private void PlacePieces(int pawnRow, int royaltyRow, List<BasePiece> pieces, Board board)
+    {
+         for(int i = 0; i < 8; i++)
+        {
+            //Place Pawns
+            pieces[i].Place(board.mAllCells[i, pawnRow]);
+
+            //Place Royalty
+            pieces[i + 8].Place(board.mAllCells[i, royaltyRow]);
+
+        }
+    }
+    #endregion
+
 }

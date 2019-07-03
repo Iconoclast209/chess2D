@@ -10,6 +10,7 @@ public class Cell : MonoBehaviour
     public Vector2Int mBoardPosition = Vector2Int.zero;
     public Board mBoard = null;
     public RectTransform mRectTransform = null;
+    public BasePiece mCurrentPiece = null;
     #endregion
 
     #region METHODS
