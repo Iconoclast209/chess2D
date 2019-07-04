@@ -21,6 +21,18 @@ public class Cell : MonoBehaviour
         mRectTransform = GetComponent<RectTransform>();
     }
 
+    public void ActivateOutline()
+    {
+        mOutlineImage.enabled = true;
+        Debug.Log("Activating Outline.");
+    }
+
+    public void DeactivateOutline()
+    {
+        mOutlineImage.enabled = false;
+        Debug.Log("Deactivating Outline.");
+    }
+
 
     #endregion
 }

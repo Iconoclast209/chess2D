@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd324833859cb2741beb8ee8d442c5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mOutlineImage: {fileID: 0}
+  mOutlineImage: {fileID: 3444733726976793843}
   mBoardPosition: {x: 0, y: 0}
   mBoard: {fileID: 0}
   mRectTransform: {fileID: 0}
