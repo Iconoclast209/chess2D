@@ -14,6 +14,7 @@ public abstract class BasePiece : EventTrigger
     protected PieceManager mPieceManager;
     protected Vector3Int mMovement = Vector3Int.one;
     protected List<Cell> mHighlightedCells = new List<Cell>();
+    protected Cell mTargetCell = null;
     #endregion
 
 
@@ -113,6 +114,17 @@ public abstract class BasePiece : EventTrigger
 
         //Follow Pointer
         transform.position += (Vector3)eventData.delta;
+
+        foreach(Cell cell in mHighlightedCells)
+        {
+            if(RectTransformUtility.RectangleContainsScreenPoint(cell.mRectTransform, Input.mousePosition))
+            {
+                //If the mouse is within a valid cell, get it, and break
+                mTargetCell = cell;
+                break;
+            }
+            mTargetCell = null;
+        }
     }
 
     public override void OnEndDrag(PointerEventData eventData)
@@ -120,8 +132,49 @@ public abstract class BasePiece : EventTrigger
         base.OnEndDrag(eventData);
 
         ClearCells();
+
+        //Return to Original Position
+        if(!mTargetCell)
+        {
+            transform.position = mCurrentCell.gameObject.transform.position;
+            return;
+        }
+        Move();
+
+        //TODO End Turn
     }
 
+    public void Reset()
+    {
+        Kill();
+        Place(mOriginalCell);
+    }
+
+    public virtual void Kill()
+    {
+        //Clear Current Cell
+        mCurrentCell.mCurrentPiece = null;
+        //Remove Piece
+        gameObject.SetActive(false);
+    }
+
+    protected virtual void Move()
+    {
+        //If there is an enemy piece, remove it
+        mTargetCell.RemovePiece();
+
+        //Clear Current Cell
+        mCurrentCell.mCurrentPiece = null;
+
+        //Switch Cells
+        mCurrentCell = mTargetCell;
+        mCurrentCell.mCurrentPiece = this;
+
+        //Move on Board
+        transform.position = mCurrentCell.transform.position;
+        mTargetCell = null;
+
+    }
 
     #endregion
 }

@@ -33,6 +33,14 @@ public class Cell : MonoBehaviour
         Debug.Log("Deactivating Outline.");
     }
 
+    public void RemovePiece()
+    {
+        if (mCurrentPiece != null)
+        {
+            mCurrentPiece.Kill();
+        }
+    }
+        
 
     #endregion
 }
