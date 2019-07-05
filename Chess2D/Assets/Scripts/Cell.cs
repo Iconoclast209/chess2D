@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Cell : MonoBehaviour
 {
     #region FIELDS
-    public Image mOutlineImage;
+    public GameObject mOutlineImage;
     public Vector2Int mBoardPosition = Vector2Int.zero;
     public Board mBoard = null;
     public RectTransform mRectTransform = null;
@@ -23,13 +23,13 @@ public class Cell : MonoBehaviour
 
     public void ActivateOutline()
     {
-        mOutlineImage.enabled = true;
+        mOutlineImage.SetActive(true);
         Debug.Log("Activating Outline.");
     }
 
     public void DeactivateOutline()
     {
-        mOutlineImage.enabled = false;
+        mOutlineImage.SetActive(false);
         Debug.Log("Deactivating Outline.");
     }
 

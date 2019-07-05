@@ -45,15 +45,17 @@ public abstract class BasePiece : EventTrigger
         int currentY = mCurrentCell.mBoardPosition.y;
 
         // Check Each Cell
-        for(int i=1; i<= movement; i++ )
+        for(int i = 1; i <= movement; i++ )
         {
             currentX += xDirection;
             currentY += yDirection;
 
             // TODO Get the state of the Target Cell
-
-            //Add to List
-            mHighlightedCells.Add(mCurrentCell.mBoard.mAllCells[currentX, currentY]);
+            if(currentX >= 0 && currentY >= 0 && currentX <= 7 && currentY <=7)
+            {
+                //Add to List
+                mHighlightedCells.Add(mCurrentCell.mBoard.mAllCells[currentX, currentY]);
+            }
         }
     }
 
