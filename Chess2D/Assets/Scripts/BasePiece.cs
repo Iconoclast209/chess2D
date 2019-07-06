@@ -45,19 +45,30 @@ public abstract class BasePiece : EventTrigger
         int currentX = mCurrentCell.mBoardPosition.x;
         int currentY = mCurrentCell.mBoardPosition.y;
 
-        // Check Each Cell
-        for(int i = 1; i <= movement; i++ )
+
+        //Check Each Cell
+        for(int i=1; i <= movement; i++)
         {
             currentX += xDirection;
             currentY += yDirection;
 
-            // TODO Get the state of the Target Cell
-            if(currentX >= 0 && currentY >= 0 && currentX <= 7 && currentY <=7)
+            CellState cellState = CellState.None;
+            cellState = mCurrentCell.mBoard.ValidateCell(currentX, currentY, this);
+
+            if (cellState == CellState.Enemy)
             {
-                //Add to List
                 mHighlightedCells.Add(mCurrentCell.mBoard.mAllCells[currentX, currentY]);
+                break;
             }
+            if(cellState != CellState.Free)
+            {
+                break;
+            }
+
+            mHighlightedCells.Add(mCurrentCell.mBoard.mAllCells[currentX, currentY]);
         }
+        
+        
     }
 
     protected virtual void CheckPathing()
@@ -96,8 +107,9 @@ public abstract class BasePiece : EventTrigger
         }
         mHighlightedCells.Clear();
     }
+    #endregion
 
-    //EVENTS
+    #region EVENTS
 
     public override void OnBeginDrag(PointerEventData eventData)
     {
@@ -141,7 +153,7 @@ public abstract class BasePiece : EventTrigger
         }
         Move();
 
-        //TODO End Turn
+        mPieceManager.SwitchSides(mColor);
     }
 
     public void Reset()

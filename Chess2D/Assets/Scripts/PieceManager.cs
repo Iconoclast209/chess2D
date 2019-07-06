@@ -6,6 +6,7 @@ public class PieceManager : MonoBehaviour
 {
     #region FIELDS
     public GameObject mPiecePrefab;
+    public bool mBothKingsAlive = true;
     private List<BasePiece> mWhitePieces = null;
     private List<BasePiece> mBlackPieces = null;
 
@@ -31,11 +32,16 @@ public class PieceManager : MonoBehaviour
 
     public void Setup(Board board)
     {
+        //Create the pieces
         mWhitePieces = CreatePieces(Color.white, new Color32(80, 124, 159, 255), board);
         mBlackPieces = CreatePieces(Color.black, new Color32(210, 95, 64, 255), board);
 
+        //Place the pieces
         PlacePieces(1, 0, mWhitePieces, board);
         PlacePieces(6, 7, mBlackPieces, board);
+
+        // White goes first
+        SwitchSides(Color.black);
     }
 
     private List<BasePiece> CreatePieces(Color teamColor, Color32 spriteColor, Board board)
@@ -78,6 +84,51 @@ public class PieceManager : MonoBehaviour
             //Place Royalty
             pieces[i + 8].Place(board.mAllCells[i, royaltyRow]);
 
+        }
+    }
+    
+   
+    private void SetInteractive(List<BasePiece> allPieces, bool value)
+    {
+        foreach(BasePiece piece in allPieces)
+        {
+            piece.enabled = value;
+        }
+    }
+
+    public void SwitchSides(Color color)
+    {
+        if(!mBothKingsAlive)
+        {
+            ResetPieces();
+            mBothKingsAlive = true;
+            color = Color.black;
+        }
+
+        bool isBlackTurn;
+        if(color == Color.white)
+        {
+            isBlackTurn = true;
+        }
+        else
+        {
+            isBlackTurn = false;
+        }
+
+        SetInteractive(mWhitePieces, !isBlackTurn);
+        SetInteractive(mBlackPieces, isBlackTurn);
+
+    }
+
+    public void ResetPieces()
+    {
+        foreach(BasePiece piece in mWhitePieces)
+        {
+            piece.Reset();
+        }
+        foreach(BasePiece piece in mBlackPieces)
+        {
+            piece.Reset();
         }
     }
     #endregion

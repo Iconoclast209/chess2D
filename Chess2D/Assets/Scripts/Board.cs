@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum CellState
+{
+    None,
+    Friendly,
+    Enemy,
+    Free,
+    OutOfBounds
+}
+
 public class Board : MonoBehaviour
 {
     #region FIELDS
@@ -26,8 +35,6 @@ public class Board : MonoBehaviour
                 //Setup the Cell
                 mAllCells[x, y] = newCell.GetComponent<Cell>();
                 mAllCells[x, y].Setup(new Vector2Int(x, y), this);
-                Debug.Log("Created new cell at " + x + ", " + y);
-
             }
         }
 
@@ -40,6 +47,39 @@ public class Board : MonoBehaviour
                 mAllCells[finalX, y].GetComponent<Image>().color = new Color32(230, 220, 187, 255);
             }
         }
+    }
+    
+    public CellState ValidateCell(int targetX, int targetY, BasePiece checkingPiece)
+    {
+        //Bounds check
+        if(targetX < 0 || targetX > 7)
+        {
+            return CellState.OutOfBounds;
+        }
+
+        if(targetY < 0 || targetY > 7)
+        {
+            return CellState.OutOfBounds;
+        }
+
+        //Get Cell
+        Cell targetCell = mAllCells[targetX, targetY];
+
+        //If the Cell has a piece
+        if(targetCell.mCurrentPiece != null)
+        {
+            if(checkingPiece.mColor == targetCell.mCurrentPiece.mColor)
+            {
+                return CellState.Friendly;
+            }
+
+            if(checkingPiece.mColor != targetCell.mCurrentPiece.mColor)
+            {
+                return CellState.Enemy;
+            }
+        }
+
+        return CellState.Free;
     }
     #endregion
 }
