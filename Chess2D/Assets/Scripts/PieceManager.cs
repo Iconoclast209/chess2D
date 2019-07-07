@@ -33,8 +33,8 @@ public class PieceManager : MonoBehaviour
     public void Setup(Board board)
     {
         //Create the pieces
-        mWhitePieces = CreatePieces(Color.white, new Color32(80, 124, 159, 255), board);
-        mBlackPieces = CreatePieces(Color.black, new Color32(210, 95, 64, 255), board);
+        mWhitePieces = CreatePieces(Color.white, Color.white, board);
+        mBlackPieces = CreatePieces(Color.black, Color.black, board);
 
         //Place the pieces
         PlacePieces(1, 0, mWhitePieces, board);
@@ -44,7 +44,7 @@ public class PieceManager : MonoBehaviour
         SwitchSides(Color.black);
     }
 
-    private List<BasePiece> CreatePieces(Color teamColor, Color32 spriteColor, Board board)
+    private List<BasePiece> CreatePieces(Color teamColor, Color spriteColor, Board board)
     {
         List<BasePiece> newPieces = new List<BasePiece>();
 

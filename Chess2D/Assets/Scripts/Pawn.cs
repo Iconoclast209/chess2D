@@ -43,12 +43,14 @@ public class Pawn : BasePiece
 
     protected override void CheckPathing()
     {
+        //Target Cell Location
         int currentX = mCurrentCell.mBoardPosition.x;
         int currentY = mCurrentCell.mBoardPosition.y;
 
         MatchesState(currentX - mMovement.z, currentY + mMovement.z, CellState.Enemy);
-        MatchesState(currentX + mMovement.z, currentY - mMovement.z, CellState.Enemy);
-        if(MatchesState(currentX, currentY + mMovement.y, CellState.Free))
+        MatchesState(currentX + mMovement.z, currentY + mMovement.z, CellState.Enemy);
+
+        if (MatchesState(currentX, currentY + mMovement.y, CellState.Free))
         {
             if(mIsFirstMove)
             {
