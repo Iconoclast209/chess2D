@@ -156,7 +156,7 @@ public abstract class BasePiece : EventTrigger
         mPieceManager.SwitchSides(mColor);
     }
 
-    public void Reset()
+    public virtual void Reset()
     {
         Kill();
         Place(mOriginalCell);
