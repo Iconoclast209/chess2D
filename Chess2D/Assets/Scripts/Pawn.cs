@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Pawn : BasePiece
 {
-    private bool mIsFirstMove = true;
-
     public override void Setup(Color newTeamColor, Color32 newSpriteColor, PieceManager newPieceManager)
     {
         base.Setup(newTeamColor, newSpriteColor, newPieceManager);
@@ -76,9 +74,4 @@ public class Pawn : BasePiece
         }
     }
 
-    public override void Reset()
-    {
-        base.Reset();
-        mIsFirstMove = true;
-    }
 }

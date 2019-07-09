@@ -8,6 +8,7 @@ public abstract class BasePiece : EventTrigger
 {
     #region FIELDS
     public Color mColor = Color.clear;
+    public bool mIsFirstMove = true;
     protected Cell mOriginalCell = null;
     protected Cell mCurrentCell = null;
     protected RectTransform mRectTransform = null;
@@ -27,7 +28,7 @@ public abstract class BasePiece : EventTrigger
         mRectTransform = GetComponent<RectTransform>();
     }
 
-    public void Place(Cell newCell)
+    public virtual void Place(Cell newCell)
     {
         //Cell
         mCurrentCell = newCell;
@@ -156,10 +157,11 @@ public abstract class BasePiece : EventTrigger
         mPieceManager.SwitchSides(mColor);
     }
 
-    public virtual void Reset()
+    public void Reset()
     {
         Kill();
         Place(mOriginalCell);
+        mIsFirstMove = true;
     }
 
     public virtual void Kill()
@@ -185,7 +187,7 @@ public abstract class BasePiece : EventTrigger
         //Move on Board
         transform.position = mCurrentCell.transform.position;
         mTargetCell = null;
-
+        mIsFirstMove = false;
     }
 
     #endregion

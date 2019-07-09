@@ -24,13 +24,11 @@ public class Cell : MonoBehaviour
     public void ActivateOutline()
     {
         mOutlineImage.SetActive(true);
-        Debug.Log("Activating Outline.");
     }
 
     public void DeactivateOutline()
     {
         mOutlineImage.SetActive(false);
-        Debug.Log("Deactivating Outline.");
     }
 
     public void RemovePiece()
